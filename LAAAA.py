@@ -14,51 +14,59 @@ def track_price():
     try:
         price = get_price(coin_id)
         if price == "N/A":
-            label_result.config(text="⚠️ Coin not found", foreground="#cc0000")
+            label_result.config(text="⚠️ Coin not found", foreground="#ff4d4d")
         else:
-            label_result.config(text=f"💰 ₹{price:.2f}", foreground="#007f00")
+            label_result.config(text=f"💰 ₹{price:.2f}", foreground="#00e676")
     except Exception as e:
-        label_result.config(text="⚠️ Unable to fetch data", foreground="#cc0000")
+        label_result.config(text="⚠️ Unable to fetch data", foreground="#ff4d4d")
 
 root = tk.Tk()
 root.title("💹 Taraksh Coin Price Tracker")
-root.geometry("420x450")
-root.configure(bg="#ffffff")
-root.resizable(False, False)
+root.geometry("900x600")
+root.configure(bg="#000000")
+root.attributes("-fullscreen", True)
+root.bind("<Escape>", lambda e: root.attributes("-fullscreen", False))
+
+# Load and set the background image
+try:
+    image_path = r"C:\Users\Taraksh\Downloads\nanana.jpg"
+    bg_image = Image.open(image_path)
+    bg_image = bg_image.resize((root.winfo_screenwidth(), root.winfo_screenheight()), Image.LANCZOS)
+    bg_photo = ImageTk.PhotoImage(bg_image)
+
+    bg_label = tk.Label(root, image=bg_photo)
+    bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+except Exception as e:
+    print(f"Error loading background image: {e}")
+
+# Create a transparent-like central frame for UI elements
+frame = tk.Frame(root, bg='#000000', bd=0)
+frame.place(relx=0.5, rely=0.5, anchor="center")
+
+label_title = tk.Label(frame, text="💹 Live Coin Price in INR", font=("Segoe UI", 22, "bold"),
+                       bg="#000000", fg="white")
+label_title.pack(pady=(0, 20))
+
+label_instructions = tk.Label(frame, text="Enter Coin ID (e.g., bitcoin, solana):",
+                              font=("Segoe UI", 14), bg="#000000", fg="#dddddd")
+label_instructions.pack(pady=(0, 10))
+
+entry_coin = ttk.Entry(frame, width=25, font=("Segoe UI", 12))
+entry_coin.pack(pady=(0, 15))
 
 style = ttk.Style()
 style.theme_use("clam")
-style.configure("TEntry", padding=5, font=("Segoe UI", 12))
-style.configure("TButton", padding=6, font=("Segoe UI", 12, "bold"), foreground="#ffffff", background="#0052cc")
-style.map("TButton", background=[("active", "#003d99")])
+style.configure("TButton", font=("Segoe UI", 12, "bold"), foreground="white", background="#0078D7")
+style.map("TButton", background=[("active", "#005A9E")])
 
-try:
-    image_path = r"C:\Users\Taraksh\Downloads\nanana.jpg"
-    img = Image.open(image_path)
-    img = img.resize((120, 120), Image.LANCZOS)
-    img = ImageTk.PhotoImage(img)
-    label_image = tk.Label(root, image=img, bg="#ffffff")
-    label_image.image = img
-    label_image.pack(pady=(20, 10))
-except Exception as e:
-    print(f"Error loading image: {e}")
+button_track = ttk.Button(frame, text="🔍 Track Price", command=track_price)
+button_track.pack(pady=(0, 20))
 
-label_title = tk.Label(root, text="Live Coin Price in INR", font=("Segoe UI", 18, "bold"), bg="#ffffff", fg="#333333")
-label_title.pack(pady=(5, 20))
+label_result = tk.Label(frame, text="", font=("Segoe UI", 16, "bold"), bg="#000000", fg="white")
+label_result.pack()
 
-label_instructions = tk.Label(root, text="Enter Coin ID (e.g., bitcoin, solana):", font=("Segoe UI", 13), bg="#ffffff", fg="#555555")
-label_instructions.pack()
-
-entry_coin = ttk.Entry(root, width=24)
-entry_coin.pack(pady=(8, 15))
-
-button_track = ttk.Button(root, text="🔍 Track Price", command=track_price)
-button_track.pack()
-
-label_result = tk.Label(root, text="", font=("Segoe UI", 16, "bold"), bg="#ffffff", pady=10)
-label_result.pack(pady=20)
-
-footer = tk.Label(root, text="Powered by CoinGecko API", font=("Segoe UI", 9), bg="#ffffff", fg="#888888")
-footer.pack(side="bottom", pady=10)
+footer = tk.Label(root, text="Powered by Taraksh", font=("Segoe UI", 10),
+                  bg="#000000", fg="#aaaaaa")
+footer.pack(side="bottom", pady=15)
 
 root.mainloop()
