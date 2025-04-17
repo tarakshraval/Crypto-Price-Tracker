@@ -27,7 +27,6 @@ root.configure(bg="#000000")
 root.attributes("-fullscreen", True)
 root.bind("<Escape>", lambda e: root.attributes("-fullscreen", False))
 
-# Load and set the background image
 try:
     image_path = r"C:\Users\Taraksh\Downloads\nanana.jpg"
     bg_image = Image.open(image_path)
@@ -38,8 +37,6 @@ try:
     bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
 except Exception as e:
     print(f"Error loading background image: {e}")
-
-# Create a transparent-like central frame for UI elements
 frame = tk.Frame(root, bg='#000000', bd=0)
 frame.place(relx=0.5, rely=0.5, anchor="center")
 
